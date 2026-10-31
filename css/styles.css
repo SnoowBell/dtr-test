@@ -970,3 +970,8 @@ nav button {
     border-color: var(--acc);
   }
 }
+
+/* Login button: centered text */
+#authGo {
+  text-align: center;
+}
