@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>DTR Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="auth" id="auth">
+      <div class="card" style="width: 100%; max-width: 400px">
+        <div
+          class="brand"
+          style="padding: 0 0 16px; border: 0; text-align: center"
+        >
+          <span>DTR TIMER TRACKER</span>
+        </div>
+        <label
+          >Account name<input
+            id="auName"
+            type="text"
+            autocomplete="username"
+            placeholder="e.g. Main Branch"
+        /></label>
+        <label
+          >Password<input
+            id="auPw"
+            type="password"
+            autocomplete="current-password"
+        /></label>
+        <div
+          id="authErr"
+          role="alert"
+          style="
+            color: var(--bad);
+            min-height: 20px;
+            margin: 10px 0 6px;
+            font-size: 13px;
+          "
+        ></div>
+        <button class="btn pri" id="authGo" style="width: 100%">Login</button>
+      </div>
+    </div>
+    <aside>
+      <div class="brand"><span>DTR SHIFT RECORDER</span></div>
+      <nav id="nav">
+        <button class="on" data-v="clock"><b></b> Time Clock</button>
+        <button data-v="log"><b></b> Daily Records</button>
+        <button data-v="sum"><b></b> Staff List</button>
+      </nav>
+      <div class="sidebox">
+        <div>
+          Dark Mode
+          <button
+            class="sw"
+            id="theme"
+            aria-label="Toggle dark mode"
+            aria-pressed="false"
+          ></button>
+        </div>
+        <div>
+          Auto-Save
+          <span class="tag" id="saveNote">On</span>
+        </div>
+        <div>
+          Cloud Sync
+          <span class="tag" id="syncNote">Local only</span>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <header><small id="todayLbl"></small></header>
+      <div class="body">
+        <section class="view on" id="v-clock">
+          <div class="grid">
+            <div>
+              <h2>Today</h2>
+              <div class="card">
+                <div class="card-inner">
+                  <div class="row">
+                    <span class="lbl">Status</span
+                    ><span class="tag o" id="status">Not clocked in</span>
+                  </div>
+                  <div class="clock" id="clk">00:00:00</div>
+                  <div class="date" id="dt"></div>
+                  <div class="fld adm-hide" style="margin-top: 0">
+                    <label class="adm-only"
+                      >Branch<select id="tBr"></select
+                    ></label>
+                    <label>Staff Name<select id="staff"></select></label>
+                    <label
+                      >Shift<select id="shift">
+                        <option>AM</option>
+                        <option>PM</option>
+                      </select></label
+                    >
+                  </div>
+                  <div class="btns adm-hide" style="margin-top: 18px">
+                    <button class="btn pri" id="bIn">Time In</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h2>Current cut-off</h2>
+              <div class="card">
+                <div class="card-inner">
+                  <div class="row co-row">
+                    <select
+                      class="cosel"
+                      id="coSel"
+                      aria-label="Select cut-off"
+                    ></select
+                    ><span class="big" id="coTot">0 Shifts</span
+                    ><select
+                      class="cosel"
+                      id="coBr"
+                      hidden
+                      aria-label="Select branch account"
+                    ></select>
+                  </div>
+                  <div style="margin-top: 14px" id="staffList"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h2>Manual entry</h2>
+          <div class="card">
+            <div class="fld" style="margin-top: 0; flex-wrap: wrap">
+              <label>Date<input id="mDate" type="date" /></label>
+              <label
+                >Time in
+                <div class="tpick">
+                  <input
+                    id="mIn"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="5"
+                    value="08:00"
+                    placeholder="HH:MM"
+                    autocomplete="off"
+                    aria-label="Time in (24-hour, HH:MM)"
+                  />
+                  <button
+                    type="button"
+                    class="tpbtn"
+                    id="tpBtn"
+                    aria-label="Pick time"
+                    aria-expanded="false"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" />
+                    </svg>
+                  </button>
+                  <div class="tppop" id="tpPop" hidden>
+                    <div class="tpcol" id="tpH"></div>
+                    <div class="tpcol" id="tpM"></div>
+                  </div></div
+              ></label>
+              <label
+                >Notes<input
+                  id="mNote"
+                  type="text"
+                  placeholder="Optional note"
+                  autocomplete="off"
+              /></label>
+              <label class="adm-only"
+                >Branch<select class="cosel" id="mBr"></select
+              ></label>
+              <label
+                >Shift<select class="cosel" id="mShift">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select></label
+              >
+              <label
+                >Staff Name<select class="cosel" id="mStaff"></select
+              ></label>
+            </div>
+            <div class="btns" style="margin-top: 18px">
+              <button class="btn pri" id="mAdd">Add record</button>
+            </div>
+          </div>
+          <h2 style="margin-top: 30px">Attendance Visual Grid</h2>
+          <div class="card" style="padding: 0">
+            <div
+              class="row co-row"
+              style="padding: 14px 16px; border-bottom: 1px solid var(--line)"
+            >
+              <select
+                class="cosel"
+                id="gvSel"
+                aria-label="Visual grid cut-off"
+              ></select>
+              <select
+                class="cosel"
+                id="gvBr"
+                aria-label="Visual grid branch"
+                hidden
+              ></select>
+            </div>
+            <div
+              class="row adm-blk"
+              style="padding: 12px 16px; border-bottom: 1px solid var(--line)"
+            >
+              <span class="lbl">Status</span
+              ><span class="tag" id="vgStatus">No time ins yet</span>
+            </div>
+            <div
+              id="vgWrap"
+              style="
+                overflow: auto;
+                max-height: 440px;
+                border-radius: 0 0 18px 18px;
+              "
+            ></div>
+          </div>
+        </section>
+
+        <section class="view" id="v-log">
+          <div
+            style="
+              margin-bottom: 14px;
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              flex-wrap: wrap;
+            "
+          >
+            <div
+              class="adm-only"
+              style="display: flex; align-items: center; gap: 12px"
+            >
+              <span class="lbl">Branch</span
+              ><select
+                class="cosel"
+                id="recBr"
+                aria-label="Filter by branch"
+              ></select>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px">
+              <span class="lbl">Cut-off</span
+              ><select
+                class="cosel"
+                id="recCo"
+                aria-label="Filter by cut-off"
+              ></select>
+            </div>
+          </div>
+          <div class="card tbl">
+            <table>
+              <thead>
+                <tr>
+                  <th class="adm-only">Branch</th>
+                  <th>Date</th>
+                  <th>Shift</th>
+                  <th>Staff</th>
+                  <th>Time in</th>
+                  <th>Notes</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+            <div class="empty" id="none">
+              No records yet. Use Time In on the Time Clock tab.
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="v-sum">
+          <h2>Staff Management</h2>
+          <div class="fld" style="margin-top: 0">
+            <select
+              class="cosel adm-only"
+              id="sfBr"
+              aria-label="Branch"
+            ></select>
+            <input
+              id="sfName"
+              type="text"
+              placeholder="Enter staff name here. Example: John"
+              autocomplete="off"
+              aria-label="Staff Name"
+              style="margin-top: 0; flex: 1"
+            />
+            <button class="btn pri" id="sfAdd" style="white-space: nowrap">
+              + Add Staff
+            </button>
+          </div>
+          <div class="card" style="margin-top: 16px; padding: 20px 24px">
+            <div class="row">
+              <span class="lbl">Registered staff</span
+              ><span class="big" id="sfCount">0</span>
+            </div>
+            <div
+              id="sfList"
+              style="margin-top: 10px; max-height: 420px; overflow-y: auto"
+            ></div>
+          </div>
+          <div class="adm-blk" style="margin-top: 28px">
+            <h2>Accounts</h2>
+            <div class="card" style="margin-bottom: 16px; padding: 20px 24px">
+              <div class="lbl">Register branch account</div>
+              <div class="fld" style="margin-top: 10px; flex-wrap: wrap">
+                <label
+                  >Account name<input
+                    id="rgName"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="e.g. Main Branch"
+                /></label>
+                <label
+                  >Password<input
+                    id="rgPw"
+                    type="password"
+                    autocomplete="new-password"
+                /></label>
+                <label
+                  >Confirm password<input
+                    id="rgPw2"
+                    type="password"
+                    autocomplete="new-password"
+                /></label>
+              </div>
+              <div
+                id="rgErr"
+                role="alert"
+                style="min-height: 20px; margin: 10px 0 6px; font-size: 13px"
+              ></div>
+              <div class="btns">
+                <button class="btn pri" id="rgAdd">+ Register account</button>
+              </div>
+            </div>
+            <div class="card" style="padding: 8px 24px">
+              <div id="acList"></div>
+            </div>
+          </div>
+          <datalist id="staffOpts"></datalist>
+        </section>
+      </div>
+      <div class="foot">
+        <button class="btn pri adm-hide" id="bSave">Save Data</button>
+        <button class="btn" id="bPrint">Print Report</button>
+        <span class="sp"></span>
+        <button class="btn adm-hide" id="bClear">Clear All</button>
+        <button class="btn" id="bOut2">Log out</button>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/cloud.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
