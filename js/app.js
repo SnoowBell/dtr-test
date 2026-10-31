@@ -22,18 +22,11 @@
     if (!KEY) return;
     try {
       localStorage.setItem(KEY, JSON.stringify({ recs: recs, open: open }));
-      note();
     } catch (e) {}
   }
   // Auto-save is always on: every change is written to storage right away
   function auto() {
     save();
-  }
-  function note() {
-    var e = $("saveNote");
-    if (!e) return;
-    var n = new Date();
-    e.textContent = "Saved " + p(n.getHours()) + ":" + p(n.getMinutes());
   }
   function p(n) {
     return String(n).padStart(2, "0");
@@ -601,7 +594,6 @@
     if (!SKEY) return;
     try {
       localStorage.setItem(SKEY, JSON.stringify(staff));
-      note();
     } catch (e) {}
   }
 
@@ -793,24 +785,6 @@
       var a = v.split("-");
       sel = { y: +a[0], m: +a[1], h: +a[2] };
     }
-    render();
-  };
-  $("bSave").onclick = function () {
-    save();
-    var b = $("bSave");
-    b.textContent = "Saved";
-    setTimeout(function () {
-      b.textContent = "Save Data";
-    }, 1200);
-  };
-  $("bPrint").onclick = function () {
-    window.print();
-  };
-  $("bClear").onclick = function () {
-    if (recs.length && !confirm("Delete all records?")) return;
-    recs = [];
-    open = null;
-    auto();
     render();
   };
   // Light mode is the default; Dark Mode is an option and the choice is remembered
