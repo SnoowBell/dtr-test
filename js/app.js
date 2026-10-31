@@ -1204,7 +1204,6 @@
       )
         gvBr = bs.length ? bs[0].id : "";
       sb.value = gvBr;
-      $("vgStatus").textContent = statusText(gvBr ? latestTimeIn(gvBr) : null);
       if (!gvBr) {
         var e0 = document.createElement("div");
         e0.className = "empty";
