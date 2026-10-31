@@ -21,10 +21,7 @@
   function save() {
     if (!KEY) return;
     try {
-      localStorage.setItem(
-        KEY,
-        JSON.stringify({ recs: recs, open: open }),
-      );
+      localStorage.setItem(KEY, JSON.stringify({ recs: recs, open: open }));
     } catch (e) {}
   }
   // Auto-save is always on: every change is written to storage right away
@@ -35,9 +32,7 @@
     return String(n).padStart(2, "0");
   }
   function iso(d) {
-    return (
-      d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate())
-    );
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
   }
   function hm(d) {
     return p(d.getHours()) + ":" + p(d.getMinutes());
@@ -188,9 +183,7 @@
         return { r: r, idx: origIdx };
       })
       .filter(function (item) {
-        return (
-          recSel === "all" || (item.r.date >= c.a && item.r.date <= c.b)
-        );
+        return recSel === "all" || (item.r.date >= c.a && item.r.date <= c.b);
       })
       .sort(function (a, b) {
         return a.r.date < b.r.date ? 1 : -1;
@@ -199,17 +192,13 @@
     filteredRecs.forEach(function (item) {
       var r = item.r;
       var tr = document.createElement("tr");
-      [
-        r.date,
-        r.shift,
-        r.staff || "Unknown",
-        r.tin,
-        r.note || "—",
-      ].forEach(function (v) {
-        var td = document.createElement("td");
-        td.textContent = v;
-        tr.appendChild(td);
-      });
+      [r.date, r.shift, r.staff || "Unknown", r.tin, r.note || "—"].forEach(
+        function (v) {
+          var td = document.createElement("td");
+          td.textContent = v;
+          tr.appendChild(td);
+        },
+      );
       var a = document.createElement("td");
       a.className = "t";
       var b = document.createElement("button");
@@ -233,8 +222,7 @@
         panel.style.margin = "0";
         var msg = document.createElement("div");
         msg.style.marginBottom = "12px";
-        msg.textContent =
-          "Delete this daily record? This cannot be undone.";
+        msg.textContent = "Delete this daily record? This cannot be undone.";
         panel.appendChild(msg);
         var btnsDiv = document.createElement("div");
         btnsDiv.className = "btns";
@@ -366,8 +354,7 @@
         m = parseInt(d.slice(-2), 10);
       }
     }
-    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59)
-      return null;
+    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) return null;
     return p(h) + ":" + p(m);
   }
   var tpLast = "08:00";
@@ -1235,11 +1222,7 @@
     // Horizontal layout: one row per staff, one column per date of the cut-off
     var t0 = iso(new Date()),
       dates = [],
-      dd = new Date(
-        +c.a.slice(0, 4),
-        +c.a.slice(5, 7) - 1,
-        +c.a.slice(8),
-      );
+      dd = new Date(+c.a.slice(0, 4), +c.a.slice(5, 7) - 1, +c.a.slice(8));
     while (iso(dd) <= c.b) {
       dates.push({ ds: iso(dd), day: dd.getDate() });
       dd.setDate(dd.getDate() + 1);
@@ -1388,8 +1371,7 @@
     branches().forEach(function (b) {
       if (only && only !== b.id) return;
       bData(b.id).recs.forEach(function (r) {
-        var k =
-          r.ts || Date.parse(r.date + "T" + (r.tin || "00:00")) || 0;
+        var k = r.ts || Date.parse(r.date + "T" + (r.tin || "00:00")) || 0;
         if (k >= bk) {
           bk = k;
           best = { r: r, b: b.name };
@@ -1559,10 +1541,7 @@
         bt.className = "btns";
         bt.appendChild(
           mkBtn("Edit", function () {
-            if (
-              admStaffEdit.branchId === b.id &&
-              admStaffEdit.index === idx
-            ) {
+            if (admStaffEdit.branchId === b.id && admStaffEdit.index === idx) {
               admStaffEdit = { branchId: "", index: -1 };
             } else {
               admStaffEdit = { branchId: b.id, index: idx };
@@ -1572,10 +1551,7 @@
           }),
         );
         var delBtn = mkBtn("Delete", function () {
-          if (
-            admStaffDel.branchId === b.id &&
-            admStaffDel.index === idx
-          ) {
+          if (admStaffDel.branchId === b.id && admStaffDel.index === idx) {
             admStaffDel = { branchId: "", index: -1 };
           } else {
             admStaffDel = { branchId: b.id, index: idx };
@@ -1590,10 +1566,7 @@
         r.appendChild(bt);
         l.appendChild(r);
 
-        if (
-          admStaffEdit.branchId === b.id &&
-          admStaffEdit.index === idx
-        ) {
+        if (admStaffEdit.branchId === b.id && admStaffEdit.index === idx) {
           var f = document.createElement("div");
           f.className = "panel";
           f.style.margin = "0 0 12px";
@@ -1606,15 +1579,12 @@
             function () {
               var nn = f.querySelector("#astN").value.trim();
               if (!nn) {
-                f.querySelector("#astE").textContent =
-                  "Enter staff name.";
+                f.querySelector("#astE").textContent = "Enter staff name.";
                 return;
               }
               if (
                 d.staff.some(function (x, i) {
-                  return (
-                    i !== idx && x.toLowerCase() === nn.toLowerCase()
-                  );
+                  return i !== idx && x.toLowerCase() === nn.toLowerCase();
                 })
               ) {
                 f.querySelector("#astE").textContent =
@@ -1793,10 +1763,7 @@
       tr.appendChild(actTd);
       tb.appendChild(tr);
 
-      if (
-        admRecDel.branchId === it.branchId &&
-        admRecDel.index === it.index
-      ) {
+      if (admRecDel.branchId === it.branchId && admRecDel.index === it.index) {
         var trPanel = document.createElement("tr");
         var tdPanel = document.createElement("td");
         tdPanel.colSpan = 7;
@@ -1806,8 +1773,7 @@
         panel.style.margin = "0";
         var msg = document.createElement("div");
         msg.style.marginBottom = "12px";
-        msg.textContent =
-          "Delete this daily record? This cannot be undone.";
+        msg.textContent = "Delete this daily record? This cannot be undone.";
         panel.appendChild(msg);
         var btnsDiv = document.createElement("div");
         btnsDiv.className = "btns";
@@ -1947,9 +1913,7 @@
     if (!ddOpen) return;
     ddOpen.classList.remove("open");
     ddOpen.querySelector(".dd-menu").hidden = true;
-    ddOpen
-      .querySelector(".dd-btn")
-      .setAttribute("aria-expanded", "false");
+    ddOpen.querySelector(".dd-btn").setAttribute("aria-expanded", "false");
     ddOpen = null;
   }
   document.addEventListener("click", function (e) {
